@@ -9,7 +9,8 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 api_service_name = "youtube"
 api_version = "v3"
-DEVELOPER_KEY = 'khdgfbrusgfhbuiIudsfhv8syuif@huiwehruihiyy&*^*&R%68ygdug'
+DEVELOPER_KEY = 'YOUR_API_HEY_HERE'
+# Get environment variables from os.environ.get()
 
 YOUTUBE = googleapiclient.discovery.build(
     api_service_name, api_version, developerKey = DEVELOPER_KEY)
