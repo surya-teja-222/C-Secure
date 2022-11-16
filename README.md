@@ -6,4 +6,4 @@ A Sentiment Analysis app.
 
 ### This is a monorepo. It contains multiple parts of C-Secure.
 
--   C-Secure can be accessed [here](https://c-secure.subzeroo.tech/)
+-   C-Secure can be accessed [here](https://c-secure-next.vercel.app)
