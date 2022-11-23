@@ -11,11 +11,14 @@ import Footer from "../components/Footer";
 
 function App() {
     const { data: session } = useSession();
+    // console.log(session);
+
     function headUserDisplay() {
         if (session && session.user) {
             return (
                 <a
                     onClick={() => signOut()}
+                    id="login"
                     className="flex group gap-3 bg-white p-3 cursor-pointer rounded-full relative"
                 >
                     <div className="opacity-0 group-hover:opacity-100 absolute  flex gap-2 text-black z-10 link_custom !text-blue-700 !text-sm">
@@ -45,9 +48,42 @@ function App() {
                 <a
                     onClick={() => signIn()}
                     className="link_custom cursor-pointer"
+                    id="login"
                 >
                     Login
                 </a>
+            );
+        }
+    }
+
+    function part2() {
+        if (session && session.user) {
+            return (
+                <form action="/retrieve" className="flex gap-4" method="post">
+                    <input
+                        type={"text"}
+                        className="outline-none bg-gray-200 font-semibold  py-2 px-4 rounded-md min-w-[60px]"
+                        placeholder="Enter a Video Link.."
+                    />
+
+                    <button
+                        type="submit"
+                        className="bg-white px-6 rounded-xl font-bold text-blue-600 py-2"
+                    >
+                        RUN!
+                    </button>
+                </form>
+            );
+        } else {
+            return (
+                <button
+                    type="submit"
+                    id="login"
+                    onClick={() => signIn()}
+                    className="bg-white px-6 rounded-xl font-bold text-blue-600 py-2"
+                >
+                    Login
+                </button>
             );
         }
     }
@@ -85,30 +121,9 @@ function App() {
                     </h1>
                 </div>
                 <div className="w-[100%] flex justify-around mt-4">
-                    {/* <Link to="/login">
-                        <div className="rounded-3xl bg-white  px-10 py-2 text-blue-400 font-semibold">
-                            LOGIN
-                        </div>
-                    </Link> */}
-                    <form
-                        action="/retrieve"
-                        className="flex gap-4"
-                        method="post"
-                    >
-                        <input
-                            type={"text"}
-                            className="outline-none bg-gray-200 font-semibold  py-2 px-4 rounded-md min-w-[60px]"
-                            placeholder="Enter a Video Link.."
-                        />
-
-                        <button
-                            type="submit"
-                            className="bg-white px-6 rounded-xl font-bold text-blue-600 py-2"
-                        >
-                            RUN!
-                        </button>
-                    </form>
+                    {part2()}
                 </div>
+
                 <CompanyStory />
                 <Services />
                 <Footer />
