@@ -12,5 +12,5 @@ export type ServiceBlockType = {
 export type CommentType = {
     username: string;
     userComment: string;
-    hateStatus: number;
+    hateStatus: 0|1|2;
 };

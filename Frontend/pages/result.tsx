@@ -1,22 +1,55 @@
 import Link from "next/link";
 import Head_HTML from "../components/head";
 import Comment from "../components/Comment";
+import Router, { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { commentDType } from "./loading";
 
 function changeCommentsSize() {
     (document.getElementById("drop") as HTMLDivElement).classList.toggle(
         "rotate-180"
     );
     const elem = document.getElementById("comments-dropdown") as HTMLDivElement;
-    if (elem.classList.contains("max-h-[75px]")) {
-        elem.classList.remove("max-h-[75px]");
-        elem.classList.add("max-h-[1000px]");
+    if (elem.classList.contains("max-h-fit")) {
+        elem.classList.remove("max-h-fit");
+        elem.classList.add("max-h-[80px]");
     } else {
-        elem.classList.add("max-h-[75px]");
-        elem.classList.remove("max-h-[1000px]");
+        elem.classList.add("max-h-fit");
+        elem.classList.remove("max-h-[80px]");
     }
 }
 
 export default function Results() {
+    const router = useRouter();
+    const URL = router.query.url;
+
+    const [data, setData] = useState<commentDType>({
+        url: "",
+        comments: [],
+    });
+
+    useEffect(() => {
+        console.log("URL: ", URL);
+        if (URL) {
+            const data = localStorage.getItem(`data-${URL}`);
+            if (data) {
+                setData(JSON.parse(data));
+            }
+        }
+    }, [URL]);
+
+    const hate = data.comments.filter(
+        (comment) => comment.sentiment === 0
+    ).length;
+    const offensive = data.comments.filter(
+        (comment) => comment.sentiment === 1
+    ).length;
+    const neutral = data.comments.filter(
+        (comment) => comment.sentiment === 2
+    ).length;
+
+    const percent = ((hate + offensive) / (hate + offensive + neutral)) * 100;
+
     return (
         <>
             <div className="w-screen h-screen overflow-x-hidden custom-background">
@@ -48,12 +81,10 @@ export default function Results() {
                             alt=""
                             className="mx-4"
                         />
-                        <a
-                            className="align-middle my-auto"
-                            href="https://c-secure-web.vercel.app/"
-                        >
+                        {/* @ts-ignore */}
+                        <a className="align-middle my-auto" href={URL}>
                             <h1 className="text-lg font-semibold italic underline  text-blue-600">
-                                https://c-secure-web.vercel.app/
+                                {URL}
                             </h1>
                         </a>
                     </div>
@@ -65,17 +96,23 @@ export default function Results() {
 
                         <div className="grid grid-cols-2 text-white font-[500] gap-3 mt-4 font-fira">
                             <div className="">Total Number of Comments:</div>
-                            <div className="">1024</div>
+                            <div className="">{data.comments.length}</div>
                             <div className="">Hate Detected:</div>
-                            <div className="">927</div>
+                            <div className="">{hate}</div>
+                            <div className="">Offensive Detected:</div>
+                            <div className="">{offensive}</div>
+                            <div className="">Other Comments:</div>
+                            <div className="">{neutral}</div>
                             <div className="">Percentage of Hate Comments</div>
-                            <div className="text-red-500 font-bold">90.52%</div>
+                            <div className="text-red-500 font-bold">
+                                {percent.toFixed(2)}%
+                            </div>
                         </div>
                     </div>
                     <div
                         id="comments-dropdown"
                         onFocus={changeCommentsSize}
-                        className="comments-dropdown transition-all duration-500 ease-in-out mt-10 rounded-2xl bg-[#3e4e5d59]  max-h-[75px]  overflow-hidden py-4 px-6 "
+                        className="comments-dropdown  transition-all duration-500 ease-in-out mt-10 rounded-2xl bg-[#3e4e5d59]  max-h-fit  overflow-hidden py-4 px-6 "
                     >
                         <div
                             className="flex justify-between"
@@ -103,30 +140,16 @@ export default function Results() {
                             </div>
                         </div>
                         <div className="content flex flex-col gap-4 mt-6 ml-4">
-                            <Comment
-                                hateStatus={0}
-                                userComment={
-                                    "Your videos are always too fun to watch."
-                                }
-                                username={"Surya"}
-                                key={1}
-                            />
-                            <Comment
-                                hateStatus={1}
-                                userComment={
-                                    "I can die instead of watching his videos"
-                                }
-                                username={"Jhon Doe."}
-                                key={2}
-                            />
-                            <Comment
-                                hateStatus={2}
-                                userComment={
-                                    "First stop shit posting on youtube bit*h."
-                                }
-                                username={"Jhon Doe."}
-                                key={3}
-                            />
+                            {data.comments.map((comment, index) => {
+                                return (
+                                    <Comment
+                                        key={index}
+                                        username={comment.author}
+                                        userComment={comment.comment}
+                                        hateStatus={comment.sentiment}
+                                    />
+                                );
+                            })}
                         </div>
                     </div>
                 </main>

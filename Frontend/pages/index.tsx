@@ -59,9 +59,26 @@ function App() {
     function part2() {
         if (session && session.user) {
             return (
-                <form action="/retrieve" className="flex gap-4" method="post">
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        window.location.href = `/loading?url=${
+                            (
+                                document.getElementById(
+                                    "input_uri"
+                                ) as HTMLInputElement
+                            ).value
+                        }`;
+                    }}
+                    action="/retrieve"
+                    className="flex gap-4"
+                    method="post"
+                >
                     <input
-                        type={"text"}
+                        required
+                        aria-required="true"
+                        type={"url"}
+                        id="input_uri"
                         className="outline-none bg-gray-200 font-semibold  py-2 px-4 rounded-md min-w-[60px]"
                         placeholder="Enter a Video Link.."
                     />

@@ -13,17 +13,17 @@ export default function CompanyStory() {
                             safe online.
                         </p>
                     </div>
-                    <div className="right flex gap-4 text-center">
+                    <div className="right flex mt-auto gap-4 text-center">
                         <img
-                            src={"/resources/random_person.png"}
+                            src={"/resources/work.png"}
                             alt="Surya"
-                            className="h-[28rem] rounded-3xl -translate-y-8 w-fit"
+                            className="h-[32rem] mt-auto  w-fit"
                         />
-                        <img
+                        {/* <img
                             src={"/resources/random_person.png"}
                             alt="Surya"
                             className="h-[28rem] rounded-3xl translate-y-8 w-fit"
-                        />
+                        /> */}
                     </div>
                 </div>
             </div>
